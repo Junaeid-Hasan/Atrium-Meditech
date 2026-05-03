@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice #{{ order.id }} - Atrium Meditech</title>
+    <style>
+        @media print {
+            .no-print { display: none; }
+            body { margin: 0; padding: 20px; }
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 40px;
+        }
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            background-color: #fff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #8b0000;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8b0000;
+        }
+        .invoice-title {
+            text-align: right;
+        }
+        .invoice-title h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #333;
+        }
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .info-block h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #8b0000;
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #eee;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        .total-section {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .total-row {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .btn-print {
+            background-color: #8b0000;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="text-align: center;">
+        <button class="btn-print" onclick="window.print()">Print / Download Invoice</button>
+    </div>
+
+    <div class="invoice-box">
+        <div class="header">
+            <div class="logo">Atrium Meditech</div>
+            <div class="invoice-title">
+                <h1>INVOICE</h1>
+                <p>#{{ order.id }} | {{ order.created|date:"M d, Y" }}</p>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-block">
+                <h3>From:</h3>
+                <p><strong>Atrium Meditech</strong><br>
+                123 Health Avenue, Medical District<br>
+                New York, NY 10001<br>
+                support@atriummeditech.com</p>
+            </div>
+            <div class="info-block" style="text-align: right;">
+                <h3>Bill To:</h3>
+                <p><strong>{{ order.first_name }} {{ order.last_name }}</strong><br>
+                {{ order.address }}<br>
+                {{ order.city }}<br>
+                {{ order.phone_number }}</p>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Color</th>
+                    <th style="text-align: center;">Qty</th>
+                    <th style="text-align: right;">Price</th>
+                    <th style="text-align: right;">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.color|default:"-" }}</td>
+                    <td style="text-align: center;">{{ item.quantity }}</td>
+                    <td style="text-align: right;">৳{{ item.price }}</td>
+                    <td style="text-align: right;">৳{{ item.get_cost }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <p>Subtotal: ৳{{ order.get_total_cost }}</p>
+            <p>Shipping: ৳0.00</p>
+            <p class="total-row">Total: ৳{{ order.get_total_cost }}</p>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for choosing Atrium Meditech. We appreciate your business!</p>
+            <p>This is a computer-generated invoice and does not require a signature.</p>
+        </div>
+    </div>
+</body>
+</html>

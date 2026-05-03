@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}About Us | Atrium Meditech{% endblock %}
+
+{% block content %}
+<div class="row mt-5 pt-3">
+    <div class="col-lg-12 text-center mb-5">
+        <div class="d-inline-flex bg-primary bg-opacity-10 p-3 rounded-circle mb-3 shadow-sm border border-primary border-opacity-10">
+            <i class="bi bi-info-circle text-primary fs-2"></i>
+        </div>
+        <h1 class="display-4 fw-800 text-dark mb-3">About <span class="text-primary">Atrium Meditech</span></h1>
+        <p class="lead text-muted mx-auto" style="max-width: 700px;">Providing premium medical supplies and precision healthcare instruments to professionals worldwide.</p>
+    </div>
+</div>
+
+<div class="row align-items-center mb-5 pb-4">
+    <div class="col-md-6 mb-4 mb-md-0">
+        <div class="bg-primary bg-opacity-10 rounded-4 p-5 h-100 d-flex align-items-center justify-content-center premium-card" style="min-height: 400px; border: 1px solid rgba(14, 165, 233, 0.1);">
+            <i class="bi bi-heart-pulse text-primary" style="font-size: 8rem; animation: pulse 2s infinite;"></i>
+        </div>
+        <style>
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+        </style>
+    </div>
+    <div class="col-md-6 ps-md-5">
+        <h2 class="fw-bold mb-4">Our Mission</h2>
+        <p class="text-muted mb-4" style="line-height: 1.8; font-size: 1.05rem;">
+            At Atrium Meditech, our mission is to empower the medical community and individuals with high-quality, reliable, and accessible medical supplies. We believe that access to premium healthcare products should be seamless and dependable.
+        </p>
+        <p class="text-muted mb-5" style="line-height: 1.8; font-size: 1.05rem;">
+            Founded with a vision to revolutionize the distribution of medical accessories, we have grown to be a trusted partner for doctors, clinics, and health-conscious individuals. We curate our catalog to ensure every product meets the highest standards.
+        </p>
+        <div class="d-flex align-items-center">
+            <div class="me-5 text-center px-3 py-2 bg-white premium-card rounded-3">
+                <h3 class="fw-bold text-primary mb-0">10k+</h3>
+                <small class="text-muted fw-semibold">Products</small>
+            </div>
+            <div class="me-5 text-center px-3 py-2 bg-white premium-card rounded-3">
+                <h3 class="fw-bold text-primary mb-0">50k+</h3>
+                <small class="text-muted fw-semibold">Customers</small>
+            </div>
+            <div class="text-center px-3 py-2 bg-white premium-card rounded-3">
+                <h3 class="fw-bold text-primary mb-0">24/7</h3>
+                <small class="text-muted fw-semibold">Support</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 pt-4 border-top">
+    <div class="col-lg-12 text-center mb-5">
+        <h2 class="fw-bold">Why Choose Us?</h2>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="premium-card bg-white p-4 h-100">
+            <div class="d-inline-flex bg-primary bg-opacity-10 p-3 rounded-circle mb-4">
+                <i class="bi bi-shield-check fs-2 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Certified Products</h4>
+            <p class="text-muted mb-0">All our products meet stringent quality and safety standards for medical use.</p>
+        </div>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="premium-card bg-white p-4 h-100">
+            <div class="d-inline-flex bg-primary bg-opacity-10 p-3 rounded-circle mb-4">
+                <i class="bi bi-truck fs-2 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Fast Delivery</h4>
+            <p class="text-muted mb-0">We ensure swift, secure, and trackable delivery straight to your door.</p>
+        </div>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="premium-card bg-white p-4 h-100">
+            <div class="d-inline-flex bg-primary bg-opacity-10 p-3 rounded-circle mb-4">
+                <i class="bi bi-headset fs-2 text-primary"></i>
+            </div>
+            <h4 class="fw-bold mb-3">Expert Support</h4>
+            <p class="text-muted mb-0">Our healthcare support team is available around the clock to assist you.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

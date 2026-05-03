@@ -1,0 +1,70 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Atrium Meditech Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    /* Premium Admin Dashboard Styling */
+    #header {
+        background: #8b0000;
+        color: #fff;
+        padding: 15px 40px;
+    }
+    #branding h1 {
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    .module h2, .module caption, .inline-group h2 {
+        background: #333 !important;
+        color: #fff !important;
+    }
+    div.breadcrumbs {
+        background: #f8f9fa;
+        border-bottom: 1px solid #eee;
+    }
+    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+        background: #8b0000 !important;
+        border-radius: 8px !important;
+        padding: 10px 20px !important;
+        border: none !important;
+        transition: all 0.3s ease !important;
+        font-weight: 600 !important;
+    }
+    .button:hover, input[type=submit]:hover {
+        background: #000 !important;
+        transform: translateY(-1px);
+    }
+    #changelist-filter {
+        border-left: none !important;
+        background: #fdfdfd !important;
+        border-radius: 12px;
+        margin-left: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .module {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        border: 1px solid #eee !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
+    }
+    #content-main {
+        padding: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <span style="display: flex; align-items: center;">
+            <span style="background: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                <span style="color: #8b0000; font-size: 20px;">A</span>
+            </span>
+            Atrium Meditech Admin
+        </span>
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

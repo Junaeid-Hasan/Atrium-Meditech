@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Atrium Meditech | Premium Medical Supplies{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0c4a6e;
+            --secondary-color: #0ea5e9;
+            --accent-color: #8b0000; /* Dark Red for Add to Cart */
+            --bg-color: #f8f9fa;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #000;
+            color: #fff;
+            padding: 0.75rem 0;
+        }
+
+        .search-form {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .search-input {
+            border-radius: 50px 0 0 50px !important;
+            padding-left: 1.5rem;
+        }
+
+        .search-btn {
+            border-radius: 0 50px 50px 0 !important;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            padding: 0 1.5rem;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            background-color: #000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .bottom-nav .nav-link {
+            color: #fff !important;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 0.75rem 1rem;
+            text-transform: uppercase;
+        }
+
+        .bottom-nav .nav-link:hover {
+            color: #ccc !important;
+        }
+
+        /* Hide Scrollbar for mobile nav */
+        .scrollable-nav {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .scrollable-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Footer Redesign */
+        .footer-premium {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 5rem 0 2rem;
+            margin-top: 8rem;
+        }
+        .footer-link {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+        .footer-link:hover { color: var(--secondary-color); }
+        .footer-heading { 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            margin-bottom: 1.5rem; 
+            color: #fff;
+        }
+
+        main { min-height: 80vh; padding-top: 2rem; }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Logo -->
+            <a class="text-white text-decoration-none d-flex align-items-center fw-bold fs-4" href="{% url 'store:product_list' %}">
+                <img src="/static/images/logo.png" alt="Logo" height="40" class="me-2 bg-white rounded-circle p-1">
+                Atrium Meditech
+            </a>
+
+                <!-- Search (Desktop) -->
+            <div class="d-none d-md-flex flex-grow-1 justify-content-center px-4">
+                <form action="{% url 'store:product_list' %}" method="get" class="input-group search-form shadow-sm">
+                    <input type="text" name="q" value="{{ request.GET.q|default_if_none:'' }}" class="form-control search-input border-0" placeholder="Search for products">
+                    <button class="btn search-btn" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right side (Login, Cart) -->
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-none d-md-flex align-items-center text-white small">
+                    <a href="#" class="text-white text-decoration-none">Login</a>
+                    <span class="mx-2">|</span>
+                    <a href="#" class="text-white text-decoration-none">Sign up</a>
+                </div>
+                <a href="{% url 'cart:cart_detail' %}" class="text-white text-decoration-none position-relative ms-2">
+                    <i class="bi bi-cart3 fs-4"></i>
+                    {% with total_items=cart|length %}
+                    {% if total_items > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.65rem;">
+                            {{ total_items }}
+                        </span>
+                    {% endif %}
+                    {% endwith %}
+                </a>
+            </div>
+        </div>
+        
+        <!-- Search (Mobile) -->
+        <div class="container d-md-none mt-2">
+            <form action="{% url 'store:product_list' %}" method="get" class="input-group shadow-sm">
+                <input type="text" name="q" value="{{ request.GET.q|default_if_none:'' }}" class="form-control search-input border-0" placeholder="Search for products">
+                <button class="btn search-btn" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav shadow-sm">
+        <div class="container">
+            <ul class="nav scrollable-nav justify-content-md-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'store:product_list' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'store:product_list_by_category' 'medical-devices' %}">Medical Devices</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'store:product_list' %}">All Product</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container mb-5">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer-premium">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <a class="navbar-brand fw-bold d-flex align-items-center mb-4 text-white" href="{% url 'store:product_list' %}">
+                        <img src="/static/images/logo.png" alt="Logo" height="35" class="me-2 filter-white">
+                        <span class="text-white">Atrium Meditech</span>
+                    </a>
+                    <p class="text-secondary opacity-75 mb-4">Leading provider of premium medical equipment and healthcare accessories. Committed to excellence in medical technology.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-outline-light rounded-circle p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-light rounded-circle p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="btn btn-outline-light rounded-circle p-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5 class="footer-heading">Shop</h5>
+                    <a href="{% url 'store:product_list' %}" class="footer-link">All Products</a>
+                    <a href="{% url 'store:product_list_by_category' 'medical-devices' %}" class="footer-link">Medical Devices</a>
+                    <a href="#" class="footer-link">Healthcare Gear</a>
+                    <a href="{% url 'store:product_list' %}?sort=latest" class="footer-link">Latest Arrivals</a>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h5 class="footer-heading">Company</h5>
+                    <a href="{% url 'store:about' %}" class="footer-link">About Us</a>
+                    <a href="{% url 'store:contact' %}" class="footer-link">Contact</a>
+                    <a href="#" class="footer-link">Quality Standards</a>
+                    <a href="#" class="footer-link">Our Mission</a>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5 class="footer-heading">Subscribe to Our Newsletter</h5>
+                    <p class="text-secondary opacity-75">Get the latest updates on medical advances and new product arrivals.</p>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control bg-dark border-secondary text-white rounded-start-pill px-4" placeholder="Your email here">
+                        <button class="btn btn-gradient rounded-end-pill px-4" type="button">Join</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-5 border-secondary opacity-25">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-3 mt-3">
+                <p class="text-secondary opacity-75 small mb-0">&copy; 2026 Atrium Meditech. All rights reserved.</p>
+                <div class="d-flex gap-4 mt-3 mt-md-0">
+                    <a href="#" class="footer-link small mb-0">Privacy Policy</a>
+                    <a href="#" class="footer-link small mb-0">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.top-bar');
+            if (navbar) {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow');
+                } else {
+                    navbar.classList.remove('shadow');
+                }
+            }
+        });
+    </script>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

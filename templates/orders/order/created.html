@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmed | Atrium Meditech{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 text-center">
+            <div class="premium-card bg-white p-5 border-0 shadow-lg rounded-4 overflow-hidden position-relative">
+                <!-- Success Background Pattern -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-05 pointer-events-none" style="background-image: radial-gradient(#198754 1px, transparent 1px); background-size: 20px 20px;"></div>
+                
+                <div class="success-icon-wrapper mb-4 d-flex justify-content-center">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center pulse-animation" style="width: 120px; height: 120px; flex-shrink: 0; aspect-ratio: 1/1;">
+                        <i class="bi bi-check2-circle text-success" style="font-size: 5rem;"></i>
+                    </div>
+                </div>
+                
+                <h1 class="display-5 fw-bold text-dark mb-3">Order Confirmed!</h1>
+                <p class="lead text-muted mb-4 px-lg-5">Thank you for your purchase. We are now preparing your items for delivery.</p>
+                
+                <div class="bg-light rounded-4 p-4 mb-5 border border-success border-opacity-10 d-inline-block px-5">
+                    <p class="text-muted small text-uppercase fw-bold ls-1 mb-1">Order #</p>
+                    <h2 class="fw-bold text-atrium mb-0">{{ order.id }}</h2>
+                </div>
+
+                <div class="row g-4 text-start mb-5">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <div class="info-icon bg-atrium bg-opacity-10 text-atrium me-3">
+                                <i class="bi bi-box-seam fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Secure Packing</h6>
+                                <p class="small text-muted mb-0">Handled with care.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <div class="info-icon bg-atrium bg-opacity-10 text-atrium me-3">
+                                <i class="bi bi-truck fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Fast Shipping</h6>
+                                <p class="small text-muted mb-0">Doorstep delivery soon.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                    <a href="/" class="btn btn-atrium btn-lg px-5 py-3 rounded-pill fw-bold shadow">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .opacity-05 { opacity: 0.05; }
+    .ls-1 { letter-spacing: 1px; }
+    .text-atrium { color: #198754 !important; }
+    .btn-atrium { background-color: #198754; color: white; border: none; }
+    .btn-atrium:hover { background-color: #157347; color: white; transform: translateY(-2px); }
+    
+    .info-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        aspect-ratio: 1/1;
+    }
+
+    .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4); }
+        70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(25, 135, 84, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
+    }
+</style>
+{% endblock %}
