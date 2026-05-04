@@ -109,6 +109,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Use WhiteNoise for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
 
 # Media Storage Configuration
 if not DEBUG:
