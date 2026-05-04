@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-dummy-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']  # Default to * for initial setup, but can be restricted
+ALLOWED_HOSTS = ['*']
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -24,9 +24,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # Cloudinary for media storage
-    'cloudinary_storage',
     'django.contrib.staticfiles',
+
+    # Cloudinary SDK (direct, no django-cloudinary-storage)
     'cloudinary',
 
     # Custom apps
@@ -37,10 +37,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    
-    # WhiteNoise is recommended for serving static files in production
+    # WhiteNoise serves static files efficiently in production
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,7 +59,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'cart.context_processors.cart',  # Global cart context
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -70,30 +68,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'medimart.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': dj_database_url.config(
-        # Replace this value with your local database URL
-        default='sqlite:///db.sqlite3',
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
         conn_max_age=600
     )
 }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # Internationalization
@@ -102,46 +89,47 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# ---------------------------------------------------------------------------
+# Static files
+# WhiteNoise middleware (above) serves static files.
+# We use Django's plain StaticFilesStorage so collectstatic JUST copies files
+# without any post-processing that causes FileNotFoundError on Admin SVGs.
+# ---------------------------------------------------------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# Use WhiteNoise for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False
+STORAGES = {
+    "staticfiles": {
+        # Plain storage — no hashing, no compression at collectstatic time.
+        # WhiteNoise middleware handles compression at runtime.
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+    "default": {
+        # Production: Cloudinary via our custom backend
+        # Development: local filesystem
+        "BACKEND": (
+            "medimart.cloudinary_storage.CloudinaryMediaStorage"
+            if not DEBUG
+            else "django.core.files.storage.FileSystemStorage"
+        ),
+    },
+}
 
-# Media Storage Configuration
-if not DEBUG:
-    STORAGES = {
-        "default": {
-            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-        },
-    }
-else:
-    STORAGES = {
-        "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        },
-    }
-
-# Media files
+# ---------------------------------------------------------------------------
+# Media files (local dev only; production uses Cloudinary via STORAGES above)
+# ---------------------------------------------------------------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Cloudinary config
-if not DEBUG:
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'dummy_cloud_name'),
-        'API_KEY': os.environ.get('CLOUDINARY_API_KEY', 'dummy_api_key'),
-        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', 'dummy_api_secret'),
-    }
+# ---------------------------------------------------------------------------
+# Cloudinary credentials (used by our custom storage backend in production)
+# ---------------------------------------------------------------------------
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+}
 
 # Cart Session ID
 CART_SESSION_ID = 'cart'
